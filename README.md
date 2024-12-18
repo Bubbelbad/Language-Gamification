@@ -1,6 +1,6 @@
-# Boilerplate - Clean Architecture ✨
+# Gamification 
 
-This is a boilerplate for Clean Architecture with CQRS.
+This is an application for language learning, made with Clean Architecture with CQRS.
 
 Featuring: 
 

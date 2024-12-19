@@ -25,7 +25,7 @@ Featuring:
 Clone the repository to your local machine:
 
 ```bash
-  git clone https://github.com/bubbelbad/clean-architecture-boilerplate.git cd your-repo-name
+  git clone https://github.com/Bubbelbad/Language-Gamification.git Language-Gamification
 ```
 
 <br>

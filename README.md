@@ -52,40 +52,17 @@ Restore the project dependencies using the .NET CLI:
 
 <br>
 
-### Step 4: Add Your Entities
-1. **Create Entity Classes**: Add your entity classes in the `Domain` or `Entities` folder. Or just use the predefined `User` entity.
-2. **Update DbContext**: Update your DbContext class to include DbSet properties for your entities. For example:
-
-```csharp
-public class ApplicationDbContext : DbContext
-{
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
-
-    public DbSet<User> Users { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-        // Additional configuration
-    }
-}
-```
-
-<br>
-
-### Step 5: Apply Migrations
-Use Entity Framework Core to apply migrations and create the database schema:
+### Step 4: Apply Migrations
+Create a new branch and use Entity Framework Core to apply migrations and create the database schema:
 
 ```bash
+  git checkout -b test/new-migration-yourName
   cd ./Infrastructure
   dotnet ef migrations add InitialMigration --startup-project ../API
   dotnet ef database update --startup-project ../API
 ```
 <br>
 
-### Step 6: Verify the Setup
+### Step 4: Verify the Setup
 Open your browser and navigate to the appropriate endpoint to verify that the application is running correctly.
 

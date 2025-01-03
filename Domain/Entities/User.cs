@@ -2,5 +2,8 @@
 
 namespace Domain.Entities
 {
-    public class User : IdentityUser { }
+    public class User() : IdentityUser 
+    { 
+        public int TotalPoints { get; set; }
+    }
 }

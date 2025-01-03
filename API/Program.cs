@@ -13,7 +13,7 @@ namespace API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Boilerplate_DefaultConnection")!);
+            builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
             builder.Services.AddAuthorization();
 
@@ -56,6 +56,12 @@ namespace API
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                     c.RoutePrefix = "swagger";  // Set Swagger UI at the app's root
                 });
+                app.UseDeveloperExceptionPage();
+                builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+            }
+            else
+            {
+                // Production configuration...
             }
 
             app.UseHttpsRedirection();

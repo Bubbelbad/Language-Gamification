@@ -1,6 +1,6 @@
 # Gamification 
 
-This is an application for language learning, made with Clean Architecture with CQRS.
+This is an application for learning by making and playing quiz, made with Clean Architecture with CQRS.
 
 Featuring: 
 
@@ -39,30 +39,42 @@ Restore the project dependencies using the .NET CLI:
 <br>
 
 ### Step 3: Configure the Database
-1. **Create a Database**: Create a new database in your SQL Server instance.
-2. **Update `appsettings.Development.json`**: Use the following template to configure your connection string in `appsettings.Development.json`:
+1. **Create a new `appsettings.Development.json`** in API layer: Use the existing template to configure your connection string from `appsettings.Development.json.template`:
 
-```csharp
-{ 
-  "ConnectionStrings": { 
-    "Boilerplate_DefaultConnection": "Server=yourServerAddress; Database=yourDatabaseName; Trusted_Connection=true; TrustServerCertificate=true;"
-  }
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=YourServer\\SQLEXPRESS; Database=YourDatabaseName; Trusted_Connection=true; TrustServerCertificate=true;"
+  },
+  "JwtSettings": {
+    "SecretKey": "your_super_long_very_secret_key_etc"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
 }
 ```
 
 <br>
 
 ### Step 4: Apply Migrations
-Create a new branch and use Entity Framework Core to apply migrations and create the database schema:
+Use the following commands in the Developer PowerShell to update the database to the latest migration: 
 
 ```bash
-  git checkout -b test/new-migration-yourName
+  $env:ASPNETCORE_ENVIRONMENT = "Development"
+```
+```bash
   cd ./Infrastructure
-  dotnet ef migrations add InitialMigration --startup-project ../API
+```
+```bash
   dotnet ef database update --startup-project ../API
 ```
 <br>
 
 ### Step 4: Verify the Setup
-Open your browser and navigate to the appropriate endpoint to verify that the application is running correctly.
+Open your browser and navigate to the User/GetAllUsers endpoint to verify that it returns an empty list, or create a new user to test it. 
 

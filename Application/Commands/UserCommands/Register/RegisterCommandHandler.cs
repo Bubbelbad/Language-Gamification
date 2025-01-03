@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Dtos.UserDtos;
+using Application.Interfaces;
 using Application.Interfaces.ServiceInterfaces;
 using Application.Models;
 using AutoMapper;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace Application.Commands.UserCommands.Register
 {
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OperationResult<User>>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OperationResult<GetUserDto>>
     {
         private readonly IGenericRepository<User> _repository;
         private readonly IMapper _mapper;
@@ -20,7 +21,7 @@ namespace Application.Commands.UserCommands.Register
             _encryptionService = service;
         }
 
-        public async Task<OperationResult<User>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<GetUserDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -29,7 +30,9 @@ namespace Application.Commands.UserCommands.Register
                 userToCreate.PasswordHash = _encryptionService.HashPassword(request.NewUser.Password);
 
                 var createdUser = await _repository.AddAsync(userToCreate);
-                return OperationResult<User>.Success(createdUser);
+                var mappedUser = _mapper.Map<GetUserDto>(createdUser);
+
+                return OperationResult<GetUserDto>.Success(mappedUser);
             }
             catch (Exception ex)
             {

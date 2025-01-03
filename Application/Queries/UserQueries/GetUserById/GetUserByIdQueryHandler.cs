@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Dtos.UserDtos;
+using Application.Interfaces;
 using Application.Models;
 using AutoMapper;
 using Domain.Entities;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace Application.Queries.UserQueries.GetUserById
 {
-    internal class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, OperationResult<User>>
+    internal class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, OperationResult<GetUserDto>>
     {
         private readonly IGenericRepository<User> _repository;
         private readonly IMapper _mapper;
@@ -18,7 +19,7 @@ namespace Application.Queries.UserQueries.GetUserById
             _mapper = mapper;
         }
 
-        public async Task<OperationResult<User>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult<GetUserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             if (request.Id == Guid.Empty)
             {
@@ -29,14 +30,14 @@ namespace Application.Queries.UserQueries.GetUserById
                 User user = await _repository.GetByIdAsync(request.Id);
                 if (user == null)
                 {
-                    return OperationResult<User>.Failure("User does not exist.");
+                    return OperationResult<GetUserDto>.Failure("User does not exist.");
                 }
-                var mappedUser = _mapper.Map<User>(user);
-                return OperationResult<User>.Success(mappedUser);
+                var mappedUser = _mapper.Map<GetUserDto>(user);
+                return OperationResult<GetUserDto>.Success(mappedUser);
             }
             catch (Exception ex)
             {
-                return OperationResult<User>.Failure(ex.Message);
+                return OperationResult<GetUserDto>.Failure(ex.Message);
             }
         }
     }

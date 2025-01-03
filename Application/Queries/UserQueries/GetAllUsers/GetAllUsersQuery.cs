@@ -1,10 +1,11 @@
-﻿using Application.Models;
+﻿using Application.Dtos.UserDtos;
+using Application.Models;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Queries.UserQueries.GetAllUsers
 {
-    public class GetAllUsersQuery() : IRequest<OperationResult<List<User>>>
+    public class GetAllUsersQuery() : IRequest<OperationResult<List<GetUserDto>>>
     {
 
     }

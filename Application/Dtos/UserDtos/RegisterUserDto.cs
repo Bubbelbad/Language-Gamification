@@ -2,7 +2,7 @@
 
 namespace Application.Dtos.UserDtos
 {
-    public class UserDto
+    public class RegisterUserDto
     {
         [Required]
         public required string UserName { get; set; }

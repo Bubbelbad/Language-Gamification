@@ -63,7 +63,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody, Required] UserDto newUser)
+        public async Task<IActionResult> Register([FromBody, Required] RegisterUserDto newUser)
         {
             _logger.LogInformation("Adding new User {username}", newUser.UserName);
             try

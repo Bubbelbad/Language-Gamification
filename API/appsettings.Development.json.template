@@ -1,9 +1,9 @@
 {
   "ConnectionStrings": {
-    "DefaultConnection": "YourConnectionStringHere"
+    "DefaultConnection": "Server=YourServer\\SQLEXPRESS; Database=YourDatabaseName; Trusted_Connection=true; TrustServerCertificate=true;"
   },
   "JwtSettings": {
-    "SecretKey": "my_super_long_very_secret_key_etc"
+    "SecretKey": "your_super_long_very_secret_key_etc"
   },
   "Logging": {
     "LogLevel": {

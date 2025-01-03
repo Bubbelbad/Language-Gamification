@@ -5,8 +5,8 @@ using MediatR;
 
 namespace Application.Commands.UserCommands.Register
 {
-    public class RegisterCommand(UserDto newUser) : IRequest<OperationResult<User>>
+    public class RegisterCommand(RegisterUserDto newUser) : IRequest<OperationResult<GetUserDto>>
     {
-        public UserDto NewUser { get; set; } = newUser;
+        public RegisterUserDto NewUser { get; set; } = newUser;
     }
 }

@@ -9,7 +9,7 @@ namespace Application.Mappings
     {
         public UserMappingProfiles()
         {
-            CreateMap<UserDto, User>();
+            CreateMap<User, GetUserDto>();
         }
     }
 }

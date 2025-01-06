@@ -79,5 +79,12 @@ namespace API.Controllers
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }
+
+        [HttpDelete]
+        [Route("Delete{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

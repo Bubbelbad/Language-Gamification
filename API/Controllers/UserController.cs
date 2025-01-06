@@ -1,11 +1,10 @@
-﻿using Application.Commands.UserCommands.Register;
+﻿using Application.Commands.UserCommands.Delete;
+using Application.Commands.UserCommands.Register;
 using Application.Dtos.UserDtos;
 using Application.Queries.UserQueries.GetAllUsers;
 using Application.Queries.UserQueries.GetUserById;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.Controllers
@@ -81,10 +80,22 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        [Route("Delete{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Deleting User with ID: {Id}", id);
+            try
+            {
+                var operationResult = await _mediator.Send(new DeleteCommand(id));
+                _logger.LogInformation("User {username} deleted successfully", operationResult);
+                return Ok(operationResult.Data);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while Deleting User");
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
     }
 }

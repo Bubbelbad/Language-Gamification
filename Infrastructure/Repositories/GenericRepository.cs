@@ -42,7 +42,7 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> DeleteAsync(Guid id)
         {
-            var entity = await _dbSet.FindAsync(id);
+            var entity = await _dbSet.FindAsync(id.ToString());
             if (entity == null)
             {
                 return false;

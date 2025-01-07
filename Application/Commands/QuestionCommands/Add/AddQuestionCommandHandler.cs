@@ -14,11 +14,6 @@ namespace Application.Commands.QuestionCommands.Add
 
         public async Task<OperationResult<GetQuestionDto>> Handle(AddQuestionCommand request, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request), "Request cannot be null.");
-            }
-
             try
             {
                 var questionToAdd = new Question

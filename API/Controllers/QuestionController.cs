@@ -1,5 +1,6 @@
 ﻿using Application.Commands.QuestionCommands.Add;
 using Application.Dtos.QuestionDtos;
+using Application.Queries.QuestionQueries.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,20 @@ namespace API.Controllers
         [Route("GetAll")]
         public async Task<IActionResult> GetAllQuestions()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var operationResult = await _mediator.Send(new GetAllQuestionsQuery());
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Data);
+                }
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching all Questions at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return BadRequest(ex.InnerException);
+            }
         }
 
         [HttpGet]

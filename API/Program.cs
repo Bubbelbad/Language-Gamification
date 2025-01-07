@@ -20,7 +20,6 @@ namespace API
             builder.Services.AddIdentityApiEndpoints<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Clean Architecture", Version = "v1" });
@@ -30,7 +29,6 @@ namespace API
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
             builder.Services.AddApplication();
 
             var app = builder.Build();
@@ -38,6 +36,13 @@ namespace API
             if (app.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                    c.RoutePrefix = "swagger";  // Set Swagger UI at the app's root
+                });
+                builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
             }
             else
             {
@@ -45,30 +50,11 @@ namespace API
                 app.UseHsts();
             }
 
-            app.MapIdentityApi<IdentityUser>();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                    c.RoutePrefix = "swagger";  // Set Swagger UI at the app's root
-                });
-                app.UseDeveloperExceptionPage();
-                builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
-            }
-            else
-            {
-                // Production configuration...
-            }
-
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
-
+            app.MapIdentityApi<IdentityUser>();
             app.MapControllers();
 
             app.Run();

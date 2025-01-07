@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("GetById")]
+        [Route("GetById{id}")]
         public async Task<IActionResult> GetQuestionById(int id)
         {
             throw new NotImplementedException();
@@ -46,7 +46,7 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        [Route("Delete")]
+        [Route("Delete{id}")]
         public async Task<IActionResult> DeleteQuestion(int id)
         {
             throw new NotImplementedException();

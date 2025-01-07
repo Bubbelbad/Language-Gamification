@@ -32,8 +32,8 @@ namespace API.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPut("{id}")]
-        [Route("Update/{id}")]
+        [HttpPut]
+        [Route("Update")]
         public async Task<IActionResult> Update()
         {
             throw new NotImplementedException();

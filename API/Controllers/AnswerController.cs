@@ -1,5 +1,5 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using Application.Queries.AnswerQueries.GetAllAnswers;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,7 +15,19 @@ namespace API.Controllers
         [Route("GetAllAnswers")]
         public async Task<IActionResult> GetAllAnswers()
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Fetching all Answers at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+            try
+            {
+                var operationResult = await _mediator.Send(new GetAllAnswersQuery());
+                _logger.LogInformation("Successfully retrieved all Answers");
+                return Ok(operationResult.Data);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching all Answers at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet]
@@ -32,8 +44,8 @@ namespace API.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPut("{id}")]
-        [Route("Update/{id}")]
+        [HttpPut]
+        [Route("Update")]
         public async Task<IActionResult> Update()
         {
             throw new NotImplementedException();

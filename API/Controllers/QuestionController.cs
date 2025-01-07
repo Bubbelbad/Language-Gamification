@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Application.Commands.QuestionCommands.Add;
+using Application.Dtos.QuestionDtos;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,9 +35,23 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<IActionResult> CreateQuestion([FromBody]string addQuestionDto)
+        public async Task<IActionResult> CreateQuestion([FromBody] AddQuestionDto dto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var operationResult = await _mediator.Send(new AddQuestionCommand(dto));
+
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Data);
+                }
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while creating a new Question at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return BadRequest(ex.InnerException);
+            }
         }
 
         [HttpPut]

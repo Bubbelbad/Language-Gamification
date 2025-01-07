@@ -17,7 +17,7 @@ namespace API.Controllers
         private readonly ILogger<UserController> _logger = logger;
 
         [HttpGet]
-        [Route("GetAllUsers")]
+        [Route("GetAll")]
         public async Task<IActionResult> GetAllUsers()
         {
             _logger.LogInformation("Fetching all Users at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
@@ -36,7 +36,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("GetUserById")]
+        [Route("GetById")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
             if (id == Guid.Empty)

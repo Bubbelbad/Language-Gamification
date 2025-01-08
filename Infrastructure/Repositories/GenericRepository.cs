@@ -50,17 +50,37 @@ namespace Infrastructure.Repositories
             return entity;
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(TKey id)
         {
-            var entity = await _dbSet.FindAsync(id.ToString());
-            if (entity == null)
+            if (id is Guid)
             {
-                return false;
-            }
+                var entity = await _dbSet.FindAsync(id.ToString());
+                if (entity == null)
+                {
+                    return false;
+                }
 
-            _dbSet.Remove(entity);
-            await _realDatabase.SaveChangesAsync();
-            return true;
+                _dbSet.Remove(entity);
+                await _realDatabase.SaveChangesAsync();
+                return true;
+            }
+            else if (id is int)
+            {
+                var entity = await _dbSet.FindAsync(id);
+                if (entity == null)
+                {
+                    return false;
+                }
+
+                _dbSet.Remove(entity);
+                await _realDatabase.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unsupported key type: {typeof(TKey).Name}");
+            }
         }
+
     }
 }

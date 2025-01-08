@@ -7,9 +7,9 @@ using MediatR;
 
 namespace Application.Queries.AnswerQueries.GetAllAnswers
 {
-    internal sealed class GetAllAnswersQueryHandler(IGenericRepository<Answer> repository, IMapper mapper) : IRequestHandler<GetAllAnswersQuery, OperationResult<List<GetAnswerDto>>>
+    public class GetAllAnswersQueryHandler(IGenericRepository<Answer, int> repository, IMapper mapper) : IRequestHandler<GetAllAnswersQuery, OperationResult<List<GetAnswerDto>>>
     {
-        private readonly IGenericRepository<Answer> _repository = repository;
+        private readonly IGenericRepository<Answer, int> _repository = repository;
         private readonly IMapper _mapper = mapper;
 
         public async Task<OperationResult<List<GetAnswerDto>>> Handle(GetAllAnswersQuery query, CancellationToken cancellationToken)

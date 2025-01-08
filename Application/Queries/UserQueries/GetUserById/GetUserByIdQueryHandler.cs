@@ -10,10 +10,10 @@ namespace Application.Queries.UserQueries.GetUserById
 {
     internal class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, OperationResult<GetUserDto>>
     {
-        private readonly IGenericRepository<User> _repository;
+        private readonly IGenericRepository<User, Guid> _repository;
         private readonly IMapper _mapper;
 
-        public GetUserByIdQueryHandler(IGenericRepository<User> repository, IMapper mapper)
+        public GetUserByIdQueryHandler(IGenericRepository<User, Guid> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

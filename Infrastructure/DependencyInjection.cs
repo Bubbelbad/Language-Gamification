@@ -17,11 +17,11 @@ namespace Infrastructure
                 options.UseSqlServer(connectionString);
             });
 
+            services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
+
             services.AddIdentityCore<User>(options => { })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             return services;
         }

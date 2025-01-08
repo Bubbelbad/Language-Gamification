@@ -10,11 +10,11 @@ namespace Application.Commands.UserCommands.Register
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OperationResult<GetUserDto>>
     {
-        private readonly IGenericRepository<User> _repository;
+        private readonly IGenericRepository<User, Guid> _repository;
         private readonly IMapper _mapper;
         private readonly IPasswordEncryptionService _encryptionService;
 
-        public RegisterCommandHandler(IGenericRepository<User> repository, IMapper mapper, IPasswordEncryptionService service)
+        public RegisterCommandHandler(IGenericRepository<User, Guid> repository, IMapper mapper, IPasswordEncryptionService service)
         {
             _repository = repository;
             _mapper = mapper;

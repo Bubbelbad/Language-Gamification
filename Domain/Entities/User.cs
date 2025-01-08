@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities
 {
-    public class User() : IdentityUser 
+    public class User() : IdentityUser
     { 
         public int TotalPoints { get; set; }
+
     }
 }

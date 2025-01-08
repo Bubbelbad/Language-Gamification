@@ -1,11 +1,12 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T, TKey> : IGenericRepository<T, TKey> where T : class
     {
         private readonly ApplicationDbContext _realDatabase;
         private readonly DbSet<T> _dbSet;
@@ -21,14 +22,9 @@ namespace Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByIdAsync(TKey id)
         {
             return await _dbSet.FindAsync(id.ToString());
-        }
-
-        public async Task<T> GetByIdAsync(int id)
-        {
-            return await _dbSet.FindAsync(id);
         }
 
         public async Task<T> AddAsync(T entity)

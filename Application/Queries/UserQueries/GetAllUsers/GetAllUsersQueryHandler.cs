@@ -7,9 +7,9 @@ using MediatR;
 
 namespace Application.Queries.UserQueries.GetAllUsers
 {
-    internal sealed class GetAllUsersQueryHandler(IGenericRepository<User> repository, IMapper mapper) : IRequestHandler<GetAllUsersQuery, OperationResult<List<GetUserDto>>>
+    internal sealed class GetAllUsersQueryHandler(IGenericRepository<User, Guid> repository, IMapper mapper) : IRequestHandler<GetAllUsersQuery, OperationResult<List<GetUserDto>>>
     {
-        private readonly IGenericRepository<User> _repository = repository;
+        private readonly IGenericRepository<User, Guid> _repository = repository;
         private readonly IMapper _mapper = mapper;
         private const string cacheKey = "allUsers";
 

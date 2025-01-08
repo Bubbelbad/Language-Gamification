@@ -15,10 +15,10 @@ namespace Application.Queries.AnswerQueries.GetAnswerById
 {
     public class GetAnswerByIdQueryHandler : IRequestHandler<GetAnswerByIdQuery, OperationResult<GetAnswerDto>>
     {
-        private readonly IGenericRepository<Answer> _repository;
+        private readonly IGenericRepository<Answer, int> _repository;
         private readonly IMapper _mapper;
 
-        public GetAnswerByIdQueryHandler(IGenericRepository<Answer> repository, IMapper mapper)
+        public GetAnswerByIdQueryHandler(IGenericRepository<Answer, int> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -26,10 +26,6 @@ namespace Application.Queries.AnswerQueries.GetAnswerById
 
         public async Task<OperationResult<GetAnswerDto>> Handle(GetAnswerByIdQuery request, CancellationToken cancellationToken)
         {
-            //if (request.Id == Guid.Empty)
-            //{
-            //    throw new ArgumentException("Invalid Answer Id");
-            //}
 
             try
             {

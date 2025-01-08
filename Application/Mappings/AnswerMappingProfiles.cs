@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.AnswerDtos;
+using Application.Dtos.UserDtos;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -14,6 +15,8 @@ namespace Application.Mappings
         public AnswerMappingProfiles()
         {
             CreateMap<Answer, GetAnswerDto>();
+            CreateMap<AddAnswerDto, GetAnswerDto>();
+            CreateMap<AddAnswerDto, Answer>();
         }
     }
 }

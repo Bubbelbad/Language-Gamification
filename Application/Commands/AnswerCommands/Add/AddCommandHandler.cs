@@ -9,10 +9,10 @@ namespace Application.Commands.AnswerCommands.Add
 {
     public class AddCommandHandler : IRequestHandler<AddCommand, OperationResult<GetAnswerDto>>
     {
-        private readonly IGenericRepository<Answer> _repository;
+        private readonly IGenericRepository<Answer, int> _repository;
         private readonly IMapper _mapper;
 
-        public AddCommandHandler(IGenericRepository<Answer> repository, IMapper mapper)
+        public AddCommandHandler(IGenericRepository<Answer, int> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

@@ -7,9 +7,9 @@ namespace Application.Commands.UserCommands.Delete
 {
     public class DeleteCommandHandler : IRequestHandler<DeleteCommand, OperationResult<bool>>
     {
-        private readonly IGenericRepository<User> _repository;
+        private readonly IGenericRepository<User, Guid> _repository;
 
-        public DeleteCommandHandler(IGenericRepository<User> repository)
+        public DeleteCommandHandler(IGenericRepository<User, Guid> repository)
         {
             _repository = repository;
         }

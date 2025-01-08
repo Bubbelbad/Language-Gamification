@@ -1,11 +1,10 @@
 ﻿using Application.Interfaces;
-using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T, TKey> : IGenericRepository<T, TKey> where T : class
     {
         private readonly ApplicationDbContext _realDatabase;
         private readonly DbSet<T> _dbSet;
@@ -21,9 +20,20 @@ namespace Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByIdAsync(TKey id)
         {
-            return await _dbSet.FindAsync(id.ToString());
+            if (id is Guid)
+            {
+                return await _dbSet.FindAsync(id.ToString());
+            }
+            else if (id is int)
+            {
+                return await _dbSet.FindAsync(id);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unsupported key type: {typeof(TKey).Name}");
+            }
         }
 
         public async Task<T> AddAsync(T entity)

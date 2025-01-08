@@ -1,6 +1,4 @@
 ﻿using Application.Interfaces;
-using Domain.Entities;
-using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,27 +20,21 @@ namespace Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        //public async Task<T> GetByIdAsync(TKey id)
-        //{
-        //    return await _dbSet.FindAsync(id);
-        //}
-
         public async Task<T> GetByIdAsync(TKey id)
         {
             if (id is Guid)
             {
-                return await _dbSet.FindAsync(id.ToString()); // Convert Guid to string for comparison
+                return await _dbSet.FindAsync(id.ToString());
             }
             else if (id is int)
             {
-                return await _dbSet.FindAsync(id); // Use int directly
+                return await _dbSet.FindAsync(id);
             }
             else
             {
                 throw new InvalidOperationException($"Unsupported key type: {typeof(TKey).Name}");
             }
         }
-
 
         public async Task<T> AddAsync(T entity)
         {

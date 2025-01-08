@@ -1,6 +1,5 @@
 ﻿using Application.Commands.AnswerCommands.Add;
 using Application.Dtos.AnswerDtos;
-using Application.Dtos.UserDtos;
 using Application.Queries.AnswerQueries.GetAllAnswers;
 using Application.Queries.AnswerQueries.GetAnswerById;
 using MediatR;
@@ -39,12 +38,6 @@ namespace API.Controllers
         [Route("GetById")]
         public async Task<IActionResult> GetAnswerById(int id)
         {
-            //if (id == Guid.Empty)
-            //{
-            //    _logger.LogWarning("Invalid input data");
-            //    return BadRequest("Invalid input data.");
-            //}
-
             _logger.LogInformation("Fetching Answer at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
 
             try

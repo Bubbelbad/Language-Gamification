@@ -22,6 +22,7 @@ namespace Application
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             services.AddAutoMapper(typeof(UserMappingProfiles).Assembly);
+            services.AddAutoMapper(typeof(QuestionMappingProfiles).Assembly);
 
             services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
             services.AddFluentValidationAutoValidation();

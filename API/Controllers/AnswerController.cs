@@ -2,6 +2,7 @@
 using Application.Dtos.AnswerDtos;
 using Application.Dtos.UserDtos;
 using Application.Queries.AnswerQueries.GetAllAnswers;
+using Application.Queries.AnswerQueries.GetAnswerById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -35,10 +36,29 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("GetAnswerById")]
+        [Route("GetById")]
         public async Task<IActionResult> GetAnswerById(int id)
         {
-            throw new NotImplementedException();
+            //if (id == Guid.Empty)
+            //{
+            //    _logger.LogWarning("Invalid input data");
+            //    return BadRequest("Invalid input data.");
+            //}
+
+            _logger.LogInformation("Fetching Answer at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+
+            try
+            {
+                var operationResult = await _mediator.Send(new GetAnswerByIdQuery(id));
+                _logger.LogInformation("Successfully retrieved Answer");
+                return Ok(operationResult.Data);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching Answer at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpPost]

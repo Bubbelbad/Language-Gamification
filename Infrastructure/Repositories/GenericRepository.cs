@@ -26,6 +26,11 @@ namespace Infrastructure.Repositories
             return await _dbSet.FindAsync(id.ToString());
         }
 
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
         public async Task<T> AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);

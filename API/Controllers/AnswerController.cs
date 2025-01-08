@@ -1,5 +1,6 @@
 ﻿using Application.Commands.AnswerCommands.Add;
 using Application.Commands.AnswerCommands.Delete;
+using Application.Commands.AnswerCommands.Update;
 using Application.Dtos.AnswerDtos;
 using Application.Queries.AnswerQueries.GetAllAnswers;
 using Application.Queries.AnswerQueries.GetAnswerById;
@@ -76,9 +77,23 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Update([FromBody, Required] UpdateAnswerDto answerToUpdate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var operationResult = await _mediator.Send(new UpdateCommand(answerToUpdate));
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Data);
+                }
+
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating AnswerId at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpDelete]

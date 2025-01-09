@@ -28,6 +28,12 @@ namespace Infrastructure.Data
                 .HasForeignKey(a => a.QuestionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Challenge>()
+                .HasMany(c => c.Questions)
+                .WithOne(q => q.Challenge)
+                .HasForeignKey(q => q.ChallengeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             // Configure automatic Id generation
 
@@ -40,6 +46,12 @@ namespace Infrastructure.Data
             builder.Entity<Question>()
                 .HasKey(e => e.Id);
             builder.Entity<Question>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
+            builder.Entity<Challenge>()
+                .HasKey(e => e.Id);
+            builder.Entity<Challenge>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
         }

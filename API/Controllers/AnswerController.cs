@@ -18,7 +18,7 @@ namespace API.Controllers
         private readonly ILogger<UserController> _logger = logger;
 
         [HttpGet]
-        [Route("GetAllAnswers")]
+        [Route("GetAll")]
         public async Task<IActionResult> GetAllAnswers()
         {
             _logger.LogInformation("Fetching all Answers at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));

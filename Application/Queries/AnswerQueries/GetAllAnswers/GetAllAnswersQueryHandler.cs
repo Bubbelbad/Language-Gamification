@@ -14,11 +14,6 @@ namespace Application.Queries.AnswerQueries.GetAllAnswers
 
         public async Task<OperationResult<List<GetAnswerDto>>> Handle(GetAllAnswersQuery query, CancellationToken cancellationToken)
         {
-            if (query == null)
-            {
-                throw new ArgumentNullException(nameof(query), "Query cannot be null.");
-            }
-
             try
             {
                 var allAnswersFromDatabase = await _repository.GetAllAsync();
@@ -26,7 +21,6 @@ namespace Application.Queries.AnswerQueries.GetAllAnswers
 
                 return OperationResult<List<GetAnswerDto>>.Success(mappedAnswersFromDatabase);
             }
-
             catch (Exception ex)
             {
                 throw new ApplicationException("An error occurred while retrieving answers from collection.", ex);

@@ -14,6 +14,9 @@ namespace Domain.Entities
         public int CorrectAnswerId { get; set; }
         public ICollection<Answer> Answers { get; set; }
 
+        public int ChallengeId { get; set; }
+        public Challenge Challenge { get; set; }
+
         int IEntity<int>.Id
         {
             get => Id;

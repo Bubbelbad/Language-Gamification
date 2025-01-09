@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos.QuestionDtos
 {
-    public class GetQuestionDto
+    public class UpdateQuestionDto
     {
         public int Id { get; set; }
         public string Text { get; set; }

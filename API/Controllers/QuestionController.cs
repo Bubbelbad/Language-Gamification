@@ -1,5 +1,6 @@
 ﻿using Application.Commands.QuestionCommands.Add;
 using Application.Commands.QuestionCommands.Delete;
+using Application.Commands.QuestionCommands.Update;
 using Application.Dtos.QuestionDtos;
 using Application.Queries.QuestionQueries.GetAll;
 using Application.Queries.QuestionQueries.GetById;
@@ -85,15 +86,21 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> UpdateQuestion([FromBody] string updateQuestionDto)
+        public async Task<IActionResult> UpdateQuestion([FromBody] UpdateQuestionDto dto)
         {
             try
             {
-                throw new NotImplementedException();
+                var operationResult = await _mediator.Send(new UpdateQuestionCommand(dto));
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Data);
+                }
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                _logger.LogError(ex, "An error occurred while creating a new Question at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return BadRequest(ex.InnerException);
             }
         }
 

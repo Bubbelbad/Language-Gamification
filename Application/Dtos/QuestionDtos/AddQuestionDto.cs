@@ -1,5 +1,4 @@
-﻿
-namespace Application.Dtos.QuestionDtos
+﻿namespace Application.Dtos.QuestionDtos
 {
     public class AddQuestionDto
     {

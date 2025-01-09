@@ -1,4 +1,5 @@
 ﻿using Application.Commands.QuestionCommands.Add;
+using Application.Commands.QuestionCommands.Delete;
 using Application.Dtos.QuestionDtos;
 using Application.Queries.QuestionQueries.GetAll;
 using Application.Queries.QuestionQueries.GetById;
@@ -102,11 +103,17 @@ namespace API.Controllers
         {
             try
             {
-                throw new NotImplementedException();
+                var operationResult = await _mediator.Send(new DeleteQuestionCommand(id));
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Message);
+                }
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                _logger.LogError(ex, "An error occurred while creating a new Question at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return BadRequest(ex.InnerException);
             }
         }
     }

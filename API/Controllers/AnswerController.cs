@@ -1,4 +1,6 @@
 ﻿using Application.Commands.AnswerCommands.Add;
+using Application.Commands.AnswerCommands.Delete;
+using Application.Commands.AnswerCommands.Update;
 using Application.Dtos.AnswerDtos;
 using Application.Queries.AnswerQueries.GetAllAnswers;
 using Application.Queries.AnswerQueries.GetAnswerById;
@@ -75,16 +77,50 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Update([FromBody, Required] UpdateAnswerDto answerToUpdate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var operationResult = await _mediator.Send(new UpdateCommand(answerToUpdate));
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Data);
+                }
+
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating AnswerId at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpDelete]
         [Route("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Deleting Answer with ID: {Id}", id);
+
+            try
+            {
+                var operationResult = await _mediator.Send(new DeleteCommand(id));
+
+                if (!operationResult.IsSuccess)
+                {
+                    _logger.LogWarning("Failed to delete Answer with ID: {Id}. Reason: {Reason}", id, operationResult.ErrorMessage);
+                    return NotFound(operationResult.ErrorMessage);
+                }
+
+                _logger.LogInformation("Answer with ID {Id} deleted successfully.", id);
+                return Ok(new { Message = "Answer deleted successfully." });
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the Answer with ID: {Id}", id);
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
     }

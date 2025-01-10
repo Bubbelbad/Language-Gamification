@@ -1,6 +1,7 @@
 ﻿using Application.Commands.ChallengeCommands.Add;
 using Application.Dtos.ChallengeDtos;
 using Application.Queries.ChallengeQueries.GetAllChallenges;
+using Application.Queries.ChallengeQueries.GetChallengeById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -37,7 +38,20 @@ namespace API.Controllers
         [Route("GetById")]
         public async Task<IActionResult> GetChallengeById(int id)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Fetching Challenge at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+
+            try
+            {
+                var operationResult = await _mediator.Send(new GetChallengeByIdQuery(id));
+                _logger.LogInformation("Successfully retrieved Challenge");
+                return Ok(operationResult.Data);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching Challenge at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpPost]

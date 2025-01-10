@@ -15,5 +15,11 @@ namespace Domain.Entities
 
         public string? Description { get; set; }
         public ICollection<Question> Questions { get; set; }
+
+        int IEntity<int>.Id
+        {
+            get => Id;
+            set => Id = value;
+        }
     }
 }

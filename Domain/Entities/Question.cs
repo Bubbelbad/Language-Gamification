@@ -6,8 +6,11 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string Text { get; set; }
-        public int CorrectAnswerId { get; set; }
+        public int ChallengeId { get; set; }
+
+        // Navigation properties
         public ICollection<Answer> Answers { get; set; }
+        public Challenge Challenge { get; set; }
 
 
         int IEntity<int>.Id

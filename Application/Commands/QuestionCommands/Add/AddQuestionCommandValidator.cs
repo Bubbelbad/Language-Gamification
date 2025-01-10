@@ -10,7 +10,7 @@ namespace Application.Commands.QuestionCommands.Add
                 .NotNull().WithMessage("Text is required.")
                 .NotEmpty().WithMessage("Text is required.");
 
-            RuleFor(x => x.Dto.CorrectAnswerId)
+            RuleFor(x => x.Dto.ChallengeId)
                 .NotNull().WithMessage("CorrectAnswerId is required.")
                 .NotEmpty().WithMessage("CorrectAnswerId is required.");
         }

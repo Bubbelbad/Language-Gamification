@@ -19,7 +19,9 @@ namespace Application.Commands.QuestionCommands.Add
                 var questionToAdd = new Question
                 {
                     Text = request.Dto.Text,
-                    CorrectAnswerId = request.Dto.CorrectAnswerId,
+                    ChallengeId = request.Dto.ChallengeId,
+                
+
                 };
 
                 var addedQuestion = await _repository.AddAsync(questionToAdd);

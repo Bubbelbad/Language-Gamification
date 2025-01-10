@@ -20,7 +20,7 @@ namespace Application.Commands.QuestionCommands.Update
                 {
                     Id = request.Dto.Id,
                     Text = request.Dto.Text,
-                    CorrectAnswerId = request.Dto.CorrectAnswerId,
+                    ChallengeId = request.Dto.ChallengeId,
                 };
 
                 var updatedQuestion = await _repository.UpdateAsync(questionToUpdate);

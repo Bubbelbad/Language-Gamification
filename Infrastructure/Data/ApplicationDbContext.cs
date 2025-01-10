@@ -30,7 +30,7 @@ namespace Infrastructure.Data
 
             builder.Entity<Challenge>()
                 .HasMany(c => c.Questions)
-                .WithOne()
+                .WithOne(q => q.Challenge)
                 .OnDelete(DeleteBehavior.Cascade);
 
 

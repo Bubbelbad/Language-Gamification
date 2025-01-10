@@ -13,6 +13,10 @@ namespace Application.Commands.AnswerCommands.Add
             RuleFor(x => x.NewAnswer.QuestionId)
                 .NotEmpty().WithMessage("QuestionId is required")
                 .NotNull().WithMessage("QuestionId is required");
+
+            RuleFor(x => x.NewAnswer.IsCorrect)
+                .NotEmpty().WithMessage("IsCorrect is required")
+                .NotNull().WithMessage("IsCorrect is required");
         }
     }
 }

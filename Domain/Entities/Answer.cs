@@ -7,8 +7,9 @@ namespace Domain.Entities
     {
         [Required]
         public int Id { get; set; }
-        public string Text { get; set; }
         public int QuestionId { get; set; }
+        public string Text { get; set; }
+        public bool IsCorrect { get; set; }
         public Question question { get; set; }
 
         int IEntity<int>.Id

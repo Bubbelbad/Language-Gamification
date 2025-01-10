@@ -1,5 +1,6 @@
 ﻿using Application.Commands.ChallengeCommands.Add;
 using Application.Dtos.ChallengeDtos;
+using Application.Queries.ChallengeQueries.GetAllChallenges;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +18,19 @@ namespace API.Controllers
         [Route("GetAll")]
         public async Task<IActionResult> GetAllChallenges()
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Fetching all Challenges at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+            try
+            {
+                var operationResult = await _mediator.Send(new GetAllChallengesQuery());
+                _logger.LogInformation("Successfully retrieved all Challenges");
+                return Ok(operationResult.Data);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching all Challenges at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet]

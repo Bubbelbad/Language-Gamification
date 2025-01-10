@@ -1,9 +1,4 @@
 ﻿using Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
@@ -14,8 +9,6 @@ namespace Domain.Entities
         public int CorrectAnswerId { get; set; }
         public ICollection<Answer> Answers { get; set; }
 
-        public int ChallengeId { get; set; }
-        public Challenge Challenge { get; set; }
 
         int IEntity<int>.Id
         {

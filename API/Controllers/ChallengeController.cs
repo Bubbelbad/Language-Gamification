@@ -1,5 +1,8 @@
-﻿using MediatR;
+﻿using Application.Commands.ChallengeCommands.Add;
+using Application.Dtos.ChallengeDtos;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Controllers
 {
@@ -26,9 +29,20 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("Add")]
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add([FromBody, Required] AddChallengeDto newChallenge)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Adding new Challenge {title}", newChallenge.Title);
+            try
+            {
+                var operationResult = await _mediator.Send(new AddChallengeCommand(newChallenge));
+                _logger.LogInformation("Challenge {title} added successfully", operationResult.Data.Title);
+                return Ok(operationResult.Data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occured while adding new Challenge");
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpPut]

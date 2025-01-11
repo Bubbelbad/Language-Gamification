@@ -1,4 +1,5 @@
 ﻿using Application.Commands.ChallengeCommands.Add;
+using Application.Commands.ChallengeCommands.Update;
 using Application.Dtos.ChallengeDtos;
 using Application.Queries.ChallengeQueries.GetAllChallenges;
 using Application.Queries.ChallengeQueries.GetChallengeById;
@@ -74,9 +75,24 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Update(UpdateChallengeDto dto)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Updating Challenge {id}", dto.Id);
+            try
+            {
+                var operationResult = await _mediator.Send(new UpdateChallengeCommand(dto));
+                if (operationResult.IsSuccess)
+                {
+                    _logger.LogInformation("Challenge {id} updated successfully", dto.Id);
+                    return Ok(operationResult.Data);
+                }
+                return BadRequest(operationResult.ErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occured while updating Challenge {id}", dto.Id);
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpDelete]

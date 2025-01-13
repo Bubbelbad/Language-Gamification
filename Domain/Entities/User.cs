@@ -7,5 +7,7 @@ namespace Domain.Entities
     { 
         public int TotalPoints { get; set; }
 
+        public ICollection<UserChallenge> UserChallenges { get; set; }
+
     }
 }

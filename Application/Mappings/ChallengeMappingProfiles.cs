@@ -11,8 +11,7 @@ namespace Application.Mappings
             CreateMap<Challenge, GetChallengeDto>();
             CreateMap<AddChallengeDto, GetChallengeDto>();
             CreateMap<AddChallengeDto, Challenge>();
-
-
+            CreateMap<UpdateChallengeDto, Challenge>();
         }
     }
 }

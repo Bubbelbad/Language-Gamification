@@ -1,5 +1,6 @@
 ﻿using Application.Commands.ChallengeCommands.Add;
 using Application.Commands.ChallengeCommands.Update;
+using Application.Commands.ChallengeCommands.Delete;
 using Application.Dtos.ChallengeDtos;
 using Application.Queries.ChallengeQueries.GetAllChallenges;
 using Application.Queries.ChallengeQueries.GetChallengeById;
@@ -99,7 +100,20 @@ namespace API.Controllers
         [Route("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var operationResult = await _mediator.Send(new DeleteChallengeCommand(id));
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Message);
+                }
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting existing Challenge at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return BadRequest(ex.InnerException);
+            }
         }
     }
 }

@@ -15,8 +15,8 @@ namespace Application.Commands.AnswerCommands.Add
                 .NotNull().WithMessage("QuestionId is required");
 
             RuleFor(x => x.NewAnswer.IsCorrect)
-                .NotEmpty().WithMessage("IsCorrect is required")
-                .NotNull().WithMessage("IsCorrect is required");
+                .Must(value => value == true || value == false)
+                .WithMessage("IsCorrect must be true or false");
         }
     }
 }

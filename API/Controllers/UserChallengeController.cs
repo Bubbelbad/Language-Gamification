@@ -1,7 +1,8 @@
-﻿using Application.Dtos.QuestionDtos;
+﻿using Application.Commands.UserChallengeCommands.Add;
+using Application.Dtos.UserChallengeDtos;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Controllers
 {
@@ -35,9 +36,20 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<IActionResult> CreateUserChallenge()
+        public async Task<IActionResult> CreateUserChallenge([FromBody] AddUserChallengeDto newUserChallenge)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Adding new UserChallenge {CompletedAt}", newUserChallenge.CompletedAt);
+            try
+            {
+                var operationResult = await _mediator.Send(new AddUserChallengeCommand(newUserChallenge));
+                //_logger.LogInformation("UserChallenge {id} added successfully", operationResult.Data.Id);
+                return Ok(operationResult.Data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occured while adding new UserChallenge");
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpPut]

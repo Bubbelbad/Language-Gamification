@@ -15,6 +15,7 @@ namespace Domain.Entities
 
         public string? Description { get; set; }
         public ICollection<Question> Questions { get; set; }
+        public ICollection<UserChallenge> UserChallenges { get; set; }
 
         int IEntity<int>.Id
         {

@@ -53,6 +53,12 @@ namespace Infrastructure.Data
             builder.Entity<Challenge>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.Entity<UserChallenge>()
+                .HasKey(e => e.Id);
+            builder.Entity<UserChallenge>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
         }
     }
 }

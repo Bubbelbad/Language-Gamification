@@ -1,8 +1,7 @@
-﻿using Application.Commands.QuestionCommands.Delete;
-using Application.Commands.UserChallengeCommands.Add;
+﻿using Application.Commands.UserChallengeCommands.Add;
 using Application.Commands.UserChallengeCommands.Delete;
+using Application.Commands.UserChallengeCommands.Update;
 using Application.Dtos.UserChallengeDtos;
-using Application.Queries.QuestionQueries.GetById;
 using Application.Queries.UserChallengeQueries.GetAll;
 using Application.Queries.UserChallengeQueries.GetById;
 using MediatR;
@@ -84,9 +83,24 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> UpdateUserChallenge()
+        public async Task<IActionResult> UpdateUserChallenge(UpdateUserChallengeDto dto)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Updating UserChallenge {id}", dto.Id);
+            try
+            {
+                var operationResult = await _mediator.Send(new UpdateUserChallengeCommand(dto));
+                if (operationResult.IsSuccess)
+                {
+                    _logger.LogInformation("User Challenge {id} updated successfully", dto.Id);
+                    return Ok(operationResult.Data);
+                }
+                return BadRequest(operationResult.ErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occured while updating User Challenge {id}", dto.Id);
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
 
         [HttpDelete]

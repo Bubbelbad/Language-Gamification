@@ -1,4 +1,6 @@
-﻿using Application.Commands.UserChallengeCommands.Add;
+﻿using Application.Commands.QuestionCommands.Delete;
+using Application.Commands.UserChallengeCommands.Add;
+using Application.Commands.UserChallengeCommands.Delete;
 using Application.Dtos.UserChallengeDtos;
 using Application.Queries.QuestionQueries.GetById;
 using Application.Queries.UserChallengeQueries.GetAll;
@@ -91,7 +93,20 @@ namespace API.Controllers
         [Route("Delete{id}")]
         public async Task<IActionResult> DeleteUserChallenge(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var operationResult = await _mediator.Send(new DeleteUserChallengeCommand(id));
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Message);
+                }
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting a user challenge at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return BadRequest(ex.InnerException);
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 ﻿using Application.Commands.UserChallengeCommands.Add;
 using Application.Dtos.UserChallengeDtos;
+using Application.Queries.QuestionQueries.GetById;
 using Application.Queries.UserChallengeQueries.GetAll;
+using Application.Queries.UserChallengeQueries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,7 +46,20 @@ namespace API.Controllers
         [Route("GetById{id}")]
         public async Task<IActionResult> GetUserChallengeById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var operationResult = await _mediator.Send(new GetUserChallengeByIdQuery(id));
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Data);
+                }
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching user challenge at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return BadRequest(ex.InnerException);
+            }
         }
 
         [HttpPost]

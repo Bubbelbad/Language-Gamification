@@ -33,6 +33,11 @@ namespace Infrastructure.Data
                 .WithOne(q => q.Challenge)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Score>()
+                .HasOne(s => s.user)
+                .WithMany(u => u.Scores)
+                .HasForeignKey(s => s.UserId);
+
 
             // Configure automatic Id generation
 
@@ -57,6 +62,12 @@ namespace Infrastructure.Data
             builder.Entity<UserChallenge>()
                 .HasKey(e => e.Id);
             builder.Entity<UserChallenge>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
+            builder.Entity<Score>()
+                .HasKey(e => e.Id);
+            builder.Entity<Score>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
         }

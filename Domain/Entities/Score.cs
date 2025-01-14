@@ -2,14 +2,13 @@
 
 namespace Domain.Entities
 {
-    public class UserChallenge : IEntity<int>
+    public class Score : IEntity<int>
     {
         public int Id { get; set; }
         public string UserId { get; set; }
         public int ChallengeId { get; set; }
-        int currentQuestionIndex { get; set; }
-        public int Score { get; set; }
-        public DateTime? CompletedAt { get; set; }
+        public int Points { get; set; }
+        public DateTime CompletedAt { get; set; }
 
         // Navigation Properties
         public Challenge Challenge { get; set; }

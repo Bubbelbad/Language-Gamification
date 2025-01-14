@@ -1,8 +1,8 @@
 ﻿using Application.Commands.UserChallengeCommands.Add;
 using Application.Dtos.UserChallengeDtos;
+using Application.Queries.UserChallengeQueries.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace API.Controllers
 {
@@ -24,7 +24,20 @@ namespace API.Controllers
         [Route("GetAll")]
         public async Task<IActionResult> GetAllUserChallenges()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var operationResult = await _mediator.Send(new GetAllUserChallengesQuery());
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Data);
+                }
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching all User Challenges at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return BadRequest(ex.InnerException);
+            }
         }
 
         [HttpGet]

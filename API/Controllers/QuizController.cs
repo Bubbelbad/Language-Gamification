@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using Application.Queries.QuestionQueries.GetAll;
+using Application.Queries.QuizQueries;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +30,29 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("GetNextQuestion")]
-        public async Task<IActionResult> GetNextQuestion(int userChallengeId)
+        public async Task<IActionResult> GetNextQuestion(int userChallengeId, int currentQuestionIndex)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Fetching the next question for UserChallengeId: {userChallengeId} at {time}", userChallengeId, DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+
+            try
+            {
+                var query = new GetNextQuestionQuery(userChallengeId, currentQuestionIndex);
+                var operationResult = await _mediator.Send(query);
+
+                if (!operationResult.IsSuccess)
+                {
+                    _logger.LogWarning("Failed to fetch next question for UserChallengeId: {userChallengeId}. Reason: {reason}", userChallengeId, operationResult.ErrorMessage);
+                    return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+                }
+
+                _logger.LogInformation("Successfully fetched the next question for UserChallengeId: {userChallengeId}", userChallengeId);
+                return Ok(operationResult.Data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching the next question for UserChallengeId: {userChallengeId} at {time}", userChallengeId, DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpPut]

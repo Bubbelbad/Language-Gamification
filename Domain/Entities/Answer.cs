@@ -10,7 +10,7 @@ namespace Domain.Entities
         public int QuestionId { get; set; }
         public string Text { get; set; }
         public bool IsCorrect { get; set; }
-        public Question question { get; set; }
+        public Question Question { get; set; }
 
         int IEntity<int>.Id
         {

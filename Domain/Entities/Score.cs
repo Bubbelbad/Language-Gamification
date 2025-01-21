@@ -12,7 +12,7 @@ namespace Domain.Entities
 
         // Navigation Properties
         public Challenge Challenge { get; set; }
-        public User user { get; set; }
+        public User User { get; set; }
 
         int IEntity<int>.Id
         {

@@ -18,13 +18,13 @@ namespace Infrastructure.Data
             // Configure Relationships
 
             builder.Entity<Answer>()
-                .HasOne(a => a.question)
+                .HasOne(a => a.Question)
                 .WithMany(q => q.Answers)
                 .HasForeignKey(a => a.QuestionId);
 
             builder.Entity<Question>()
                 .HasMany(q => q.Answers)
-                .WithOne(a => a.question)
+                .WithOne(a => a.Question)
                 .HasForeignKey(a => a.QuestionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -34,9 +34,28 @@ namespace Infrastructure.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Score>()
-                .HasOne(s => s.user)
+                .HasOne(s => s.User)
                 .WithMany(u => u.Scores)
                 .HasForeignKey(s => s.UserId);
+
+            builder.Entity<UserChallenge>()
+                .HasOne(uc => uc.User)
+                .WithMany(u => u.UserChallenges)
+                .HasForeignKey(uc => uc.UserId);
+
+            builder.Entity<UserChallenge>()
+                .HasOne(uc => uc.Challenge)
+                .WithMany(c => c.UserChallenges)
+                .HasForeignKey(uc => uc.ChallengeId);
+
+            builder.Entity<UserChallenge>()
+                .Property(uc => uc.Score)
+                .IsRequired(false);
+
+            builder.Entity<UserChallenge>()
+                .Property(uc => uc.CompletedAt)
+                .IsRequired(false);
+
 
 
             // Configure automatic Id generation

@@ -20,8 +20,6 @@ namespace Application.Commands.QuestionCommands.Add
                 {
                     Text = request.Dto.Text,
                     ChallengeId = request.Dto.ChallengeId,
-                
-
                 };
 
                 var addedQuestion = await _repository.AddAsync(questionToAdd);

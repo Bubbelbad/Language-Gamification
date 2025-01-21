@@ -1,4 +1,5 @@
-﻿using Application.Queries.QuestionQueries.GetAll;
+﻿using Application.Commands.QuizCommands.StartChallenge;
+using Application.Queries.QuestionQueries.GetAll;
 using Application.Queries.QuizQueries;
 using Domain.Entities;
 using MediatR;
@@ -25,7 +26,21 @@ namespace API.Controllers
         [Route("StartChallenge")]
         public async Task<IActionResult> StartChallenge(int challengeId, Guid userId)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Starting a new challenge for UserId: {userId} at {time}", userId, DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+            try
+            {
+                var command = new StartChallengeCommand(challengeId, userId.ToString());
+                var operationResult = await _mediator.Send(command);
+                if (!operationResult.IsSuccess)
+                {
+                    return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+                }
+                return Ok(operationResult.Data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet]

@@ -7,13 +7,13 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string UserId { get; set; }
         public int ChallengeId { get; set; }
-        int currentQuestionIndex { get; set; }
-        public int Score { get; set; }
+        public int CurrentQuestionIndex { get; set; }
+        public int? Score { get; set; }
         public DateTime? CompletedAt { get; set; }
 
         // Navigation Properties
         public Challenge Challenge { get; set; }
-        public User user { get; set; }
+        public User User { get; set; }
 
         int IEntity<int>.Id
         {

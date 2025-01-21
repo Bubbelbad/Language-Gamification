@@ -1,6 +1,8 @@
 ﻿using Application.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
@@ -20,21 +22,40 @@ namespace Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(TKey id)
+        public async Task<T?> GetByIdAsync(TKey id, params Expression<Func<T, object>>[] includeProperties)
         {
+            IQueryable<T> query = _dbSet;
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            // Get the key property name using reflection
+            var keyProperty = typeof(T).GetProperties()
+                .FirstOrDefault(p => p.GetCustomAttributes(typeof(KeyAttribute), false).Any());
+
+            if (keyProperty == null)
+            {
+                throw new InvalidOperationException("No key property found for entity type " + typeof(T).Name);
+            }
+
+            var keyPropertyName = keyProperty.Name;
+
             if (id is Guid || id is string)
             {
-                return await _dbSet.FindAsync(id.ToString());
+                return await query.FirstOrDefaultAsync(e => EF.Property<string>(e, keyPropertyName).Equals(id.ToString()));
             }
             else if (id is int)
             {
-                return await _dbSet.FindAsync(id);
+                return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, keyPropertyName).Equals(id));
             }
             else
             {
                 throw new InvalidOperationException($"Unsupported key type: {typeof(TKey).Name}");
             }
         }
+
 
         public async Task<T> AddAsync(T entity)
         {

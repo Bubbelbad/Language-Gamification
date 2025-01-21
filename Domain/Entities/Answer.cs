@@ -5,6 +5,7 @@ namespace Domain.Entities
 {
     public class Answer : IEntity<int>
     {
+        [Key]
         [Required]
         public int Id { get; set; }
         public int QuestionId { get; set; }

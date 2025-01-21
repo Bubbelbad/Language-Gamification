@@ -1,9 +1,11 @@
 ﻿using Domain.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities
 {
     public class UserChallenge : IEntity<int>
     {
+        [Key]
         public int Id { get; set; }
         public string UserId { get; set; }
         public int ChallengeId { get; set; }

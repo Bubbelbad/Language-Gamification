@@ -22,7 +22,7 @@ namespace Infrastructure.Repositories
 
         public async Task<T> GetByIdAsync(TKey id)
         {
-            if (id is Guid)
+            if (id is Guid || id is string)
             {
                 return await _dbSet.FindAsync(id.ToString());
             }

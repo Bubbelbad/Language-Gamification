@@ -12,6 +12,7 @@ namespace Application.Mappings
             CreateMap<AddAnswerDto, GetAnswerDto>();
             CreateMap<AddAnswerDto, Answer>();
             CreateMap<Answer, UpdateAnswerDto>();
+            CreateMap<Answer, GetSimpleAnswerDto>();
         }
     }
 }

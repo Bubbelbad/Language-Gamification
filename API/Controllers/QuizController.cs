@@ -45,13 +45,13 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("GetNextQuestion")]
-        public async Task<IActionResult> GetNextQuestion(int userChallengeId, int currentQuestionIndex)
+        public async Task<IActionResult> GetNextQuestion(int userChallengeId)
         {
             _logger.LogInformation("Fetching the next question for UserChallengeId: {userChallengeId} at {time}", userChallengeId, DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
 
             try
             {
-                var query = new GetNextQuestionQuery(userChallengeId, currentQuestionIndex);
+                var query = new GetNextQuestionQuery(userChallengeId);
                 var operationResult = await _mediator.Send(query);
 
                 if (!operationResult.IsSuccess)

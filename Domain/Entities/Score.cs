@@ -9,6 +9,7 @@ namespace Domain.Entities
         public int ChallengeId { get; set; }
         public int Points { get; set; }
         public DateTime CompletedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         // Navigation Properties
         public Challenge Challenge { get; set; }

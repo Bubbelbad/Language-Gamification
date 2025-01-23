@@ -20,5 +20,11 @@ namespace Domain.Entities
             get => Id;
             set => Id = value;
         }
+
+        public bool IsLastQuestion()
+        {
+            return Challenge.Questions != null &&
+                CurrentQuestionIndex >= Challenge.Questions.Count - 1;
+        }
     }
 }

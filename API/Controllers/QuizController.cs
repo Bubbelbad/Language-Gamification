@@ -1,4 +1,5 @@
-﻿using Application.Commands.QuizCommands.StartChallenge;
+﻿using Application.Commands.AnswerCommands.Submit;
+using Application.Commands.QuizCommands.StartChallenge;
 using Application.Queries.QuestionQueries.GetAll;
 using Application.Queries.QuizQueries;
 using Domain.Entities;
@@ -72,11 +73,32 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("SubmitAnswer")]
-        public async Task<IActionResult> SubmitAnswer(int questionId, int selectedAnswerId)
+        public async Task<IActionResult> SubmitAnswer(Guid userChallengeId, int selectedAnswerId)
         {
-            throw new NotImplementedException();
-        }
+            _logger.LogInformation("Submiting answer for UserChallengeId: {userChallenge} at {time}", userChallengeId, DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
 
+            try
+            {
+                var command = new SubmitCommand(userChallengeId, selectedAnswerId);
+
+                    var operationResult = await _mediator.Send(command);
+
+                if (!operationResult.IsSuccess)
+                {
+                    _logger.LogWarning("Failed to submit answer for UserChallengeId: {userChallengeId}. Reason: {reason}", userChallengeId, operationResult.ErrorMessage);
+                    return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+                }
+
+                _logger.LogInformation("Successfully submitted answer for UserChallengeId: {userChallengeId}", userChallengeId);
+                return Ok(new { message = "Answer submitted successfully.", data = operationResult.Data });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while submitting answer for UserChallengeId {userChallengeId} at {time}", userChallengeId, DateTime.Now.ToString("mm/dd/yyyy hh:mm tt"));
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+        
         [HttpPost]
         [Route("CompleteChallenge")]
         public async Task<IActionResult> CompleteChallenge(string userId, int challengeId, int score)

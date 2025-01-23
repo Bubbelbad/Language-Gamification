@@ -25,36 +25,29 @@ namespace Infrastructure.Repositories
         public async Task<T?> GetByIdAsync(TKey id, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _dbSet;
-
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);
             }
 
-            // Get the key property name using reflection
-            var keyProperty = typeof(T).GetProperties()
-                .FirstOrDefault(p => p.GetCustomAttributes(typeof(KeyAttribute), false).Any());
-
-            if (keyProperty == null)
+            if (id is Guid)
             {
-                throw new InvalidOperationException("No key property found for entity type " + typeof(T).Name);
-            }
-
-            var keyPropertyName = keyProperty.Name;
-
-            if (id is Guid || id is string)
-            {
-                return await query.FirstOrDefaultAsync(e => EF.Property<string>(e, keyPropertyName).Equals(id.ToString()));
+                return await query.FirstOrDefaultAsync(e => EF.Property<string>(e, "Id").Equals(id.ToString()));
             }
             else if (id is int)
             {
-                return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, keyPropertyName).Equals(id));
+                return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id").Equals(id));
+            }
+            else if (id is string)
+            {
+                return await query.FirstOrDefaultAsync(e => EF.Property<string>(e, "Id").Equals(id));
             }
             else
             {
                 throw new InvalidOperationException($"Unsupported key type: {typeof(TKey).Name}");
             }
         }
+
 
 
         public async Task<T> AddAsync(T entity)

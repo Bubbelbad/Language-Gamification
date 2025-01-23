@@ -48,8 +48,6 @@ namespace Infrastructure.Repositories
             }
         }
 
-
-
         public async Task<T> AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
@@ -96,5 +94,9 @@ namespace Infrastructure.Repositories
             }
         }
 
+        public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.AnyAsync(predicate);
+        }
     }
 }

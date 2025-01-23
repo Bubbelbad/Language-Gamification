@@ -6,10 +6,10 @@ using MediatR;
 namespace Application.Commands.QuizCommands.StartChallenge
 {
     internal sealed class StartChallengeCommandHandler(
-        IGenericRepository<User, string> userRepository, 
-        IGenericRepository<Challenge, int> challengeRepository,
-        IGenericRepository<UserChallenge, int> userChallengeRepository) 
-        : IRequestHandler<StartChallengeCommand, OperationResult<int>>
+            IGenericRepository<User, string> userRepository,
+            IGenericRepository<Challenge, int> challengeRepository,
+            IGenericRepository<UserChallenge, int> userChallengeRepository)
+            : IRequestHandler<StartChallengeCommand, OperationResult<int>>
     {
         IGenericRepository<User, string> _userRepository = userRepository;
         IGenericRepository<Challenge, int> _challengeRepository = challengeRepository;
@@ -29,6 +29,13 @@ namespace Application.Commands.QuizCommands.StartChallenge
             else if (challenge == null)
             {
                 return OperationResult<int>.Failure("Challenge not found.");
+            }
+
+            var userChallengeExists = await _userChallengeRepository.ExistsAsync(uc => uc.UserId == request.UserId && uc.ChallengeId == request.ChallengeId);
+
+            if (userChallengeExists)
+            {
+                return OperationResult<int>.Failure("Challenge already started");
             }
 
             var userChallengeToAdd = new UserChallenge()

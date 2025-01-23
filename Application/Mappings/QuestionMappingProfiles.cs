@@ -1,8 +1,6 @@
 ﻿using Application.Dtos.QuestionDtos;
-using Application.Models;
 using AutoMapper;
 using Domain.Entities;
-using System.Security.AccessControl;
 
 namespace Application.Mappings
 {
@@ -12,6 +10,8 @@ namespace Application.Mappings
         {
             CreateMap<Question, GetQuestionDto>();
             CreateMap<Question, List<GetQuestionDto>>();
+            CreateMap<Question, GetQuestionWithAnswersDto>()
+                .ForMember(dest => dest.Answers, opt => opt.MapFrom(src => src.Answers));
         }
     }
 }

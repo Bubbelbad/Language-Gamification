@@ -1,52 +1,54 @@
-﻿using Application.Dtos.QuestionDtos;
+﻿using Application.Dtos.AnswerDtos;
+using Application.Dtos.QuestionDtos;
 using Application.Interfaces;
 using Application.Models;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using System.Runtime.CompilerServices;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Queries.QuizQueries
 {
-    public class GetNextQuestionQueryHandler : IRequestHandler<GetNextQuestionQuery, OperationResult<GetQuestionDto>>
+    public class GetNextQuestionQueryHandler : IRequestHandler<GetNextQuestionQuery, OperationResult<GetQuestionWithAnswersDto>>
     {
         private readonly IGenericRepository<Question, int> _questionRepository;
         private readonly IGenericRepository<UserChallenge, int> _userChallengeRepository;
+        private readonly IGenericRepository<Challenge, int> _challengeRepository;
         private readonly IMapper _mapper;
         public GetNextQuestionQueryHandler(IGenericRepository<Question, int> questionRepository,
                                             IGenericRepository<UserChallenge, int> userChallengeRepository,
+                                            IGenericRepository<Challenge, int> challengeRepository,
                                             IMapper mapper)
         {
             _questionRepository = questionRepository;
             _userChallengeRepository = userChallengeRepository;
+            _challengeRepository = challengeRepository;
             _mapper = mapper;
         }
 
-        public async Task<OperationResult<GetQuestionDto>> Handle(GetNextQuestionQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult<GetQuestionWithAnswersDto>> Handle(GetNextQuestionQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 var userChallenge = await _userChallengeRepository.GetByIdAsync(request.UserChallengeId);
                 if (userChallenge == null)
                 {
-                    return OperationResult<GetQuestionDto>.Failure("The specified user challenge was not found.");
+                    return OperationResult<GetQuestionWithAnswersDto>.Failure("The specified user challenge was not found.");
                 }
 
-                var questions = userChallenge.Challenge.Questions.OrderBy(q => q.Id).ToList();
-                if (request.CurrentQuestionIndex >= questions.Count)
-                {
-                    return OperationResult<GetQuestionDto>.Failure("No more questions are available for this challenge.");
-                }
+                var challenge = await _challengeRepository.GetByIdAsync(userChallenge.ChallengeId, q => q.Questions);
 
-                var nextQuestion = questions[request.CurrentQuestionIndex];
-                var questionDto = _mapper.Map<GetQuestionDto>(nextQuestion);
+                var challengeQuestions = challenge.Questions.ToList();
+                var currentQuestion = challengeQuestions[userChallenge.CurrentQuestionIndex];
 
-                return OperationResult<GetQuestionDto>.Success(questionDto, "Next question retrieved successfully.");
+                var answers = _questionRepository.GetByIdAsync(currentQuestion.Id, q => q.Answers).Result.Answers.ToList();
+
+                var mappedCurrentQuestion = _mapper.Map<GetQuestionWithAnswersDto>(currentQuestion);
+                mappedCurrentQuestion.Answers = _mapper.Map<List<GetSimpleAnswerDto>>(answers);
+                return OperationResult<GetQuestionWithAnswersDto>.Success(mappedCurrentQuestion);
             }
             catch (Exception ex)
             {
-                return OperationResult<GetQuestionDto>.Failure($"An error occurred: {ex.Message}");
+                return OperationResult<GetQuestionWithAnswersDto>.Failure($"An error occurred: {ex.Message}");
             }
         }
     }

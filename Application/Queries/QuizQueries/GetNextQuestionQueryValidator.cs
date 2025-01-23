@@ -1,5 +1,4 @@
-﻿
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Application.Queries.QuizQueries
 {
@@ -7,11 +6,12 @@ namespace Application.Queries.QuizQueries
     {
         public GetNextQuestionQueryValidator() 
         {
-            RuleFor(x => x.UserChallengeId).GreaterThan(0)
+            RuleFor(x => x.UserChallengeId)
+                .GreaterThan(0)
                 .WithMessage("UserChallengeId must be greater than 0.");
 
-            RuleFor(x => x.CurrentQuestionIndex).GreaterThanOrEqualTo(0)
-                .WithMessage("CurrentQuestionIndex cannot be negative.");
+            //RuleFor(x => x.CurrentQuestionIndex).GreaterThanOrEqualTo(0)
+            //    .WithMessage("CurrentQuestionIndex cannot be negative.");
         }
     }
 }

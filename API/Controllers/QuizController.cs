@@ -1,4 +1,5 @@
 ﻿using Application.Commands.QuizCommands.StartChallenge;
+using Application.Commands.QuizCommands.SubmitAnswer;
 using Application.Queries.QuestionQueries.GetAll;
 using Application.Queries.QuizQueries;
 using Domain.Entities;
@@ -72,9 +73,24 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("SubmitAnswer")]
-        public async Task<IActionResult> SubmitAnswer(int questionId, int selectedAnswerId)
+        public async Task<IActionResult> SubmitAnswer(int userChallengeId, int selectedAnswerId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var command = new SubmitAnswerCommand(userChallengeId, selectedAnswerId);
+                var operationResult = await _mediator.Send(command);
+
+                if (!operationResult.IsSuccess)
+                {
+                    return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+                }
+
+                return Ok(operationResult.Data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpPost]

@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.QuizDtos;
+using Application.Dtos.ScoreDtos;
 using Application.Interfaces;
 using Application.Models;
 using AutoMapper;
@@ -57,11 +58,11 @@ namespace Application.Commands.QuizCommands.SubmitAnswer
                     userChallenge.Score = (userChallenge.Score ?? 0) + 1;
                 }
 
-                Score? score = null;
+                GetScoreDto? scoreDto = null;
                 var lastQuestion = challenge.IsLastQuestion(userChallenge.CurrentQuestionIndex);
                 if (lastQuestion)
                 {
-                    score = new Score
+                    var score = new Score
                     {
                         UserId = userChallenge.UserId,
                         ChallengeId = userChallenge.ChallengeId,
@@ -72,6 +73,15 @@ namespace Application.Commands.QuizCommands.SubmitAnswer
                     };
 
                     await _scoreRepository.AddAsync(score);
+
+                    scoreDto = new GetScoreDto
+                    {
+                        Id = score.Id,
+                        UserId = score.UserId,
+                        ChallengeId = score.ChallengeId,
+                        Points = score.Points,
+                        CompletedAt = score.CompletedAt
+                    };
                 }
 
                 else
@@ -84,7 +94,7 @@ namespace Application.Commands.QuizCommands.SubmitAnswer
                 var submitAnswerDto = new SubmitAnswerDto
                 {
                     IsCorrect = answer.IsCorrect,
-                    Score = score
+                    Score = scoreDto
                 };
 
                 var mappedSubmitAnswerDto = _mapper.Map<SubmitAnswerDto>(submitAnswerDto);

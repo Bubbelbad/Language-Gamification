@@ -1,10 +1,10 @@
-﻿using Domain.Entities;
+﻿using Application.Dtos.ScoreDtos;
 
 namespace Application.Dtos.QuizDtos
 {
     public class SubmitAnswerDto
     {
         public bool IsCorrect { get; set; }
-        public Score? Score { get; set; }
+        public GetScoreDto? Score { get; set; }
     }
 }

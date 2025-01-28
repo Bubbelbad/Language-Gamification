@@ -1,10 +1,7 @@
 ﻿using Application.Commands.QuizCommands.StartChallenge;
 using Application.Commands.QuizCommands.SubmitAnswer;
-using Application.Queries.QuestionQueries.GetAll;
 using Application.Queries.QuizQueries;
-using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -91,13 +88,6 @@ namespace API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
-        }
-
-        [HttpPost]
-        [Route("CompleteChallenge")]
-        public async Task<IActionResult> CompleteChallenge(string userId, int challengeId, int score)
-        {
-            throw new NotImplementedException();
         }
     }
 }

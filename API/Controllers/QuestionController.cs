@@ -6,7 +6,6 @@ using Application.Queries.QuestionQueries.GetAll;
 using Application.Queries.QuestionQueries.GetById;
 using Application.Queries.QuestionQueries.GetQuestionsByChallengeId;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

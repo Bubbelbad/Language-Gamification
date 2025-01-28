@@ -1,9 +1,7 @@
 ﻿using Application.Commands.QuizCommands.StartChallenge;
-using Application.Queries.QuestionQueries.GetAll;
+using Application.Commands.QuizCommands.SubmitAnswer;
 using Application.Queries.QuizQueries;
-using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -72,16 +70,24 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("SubmitAnswer")]
-        public async Task<IActionResult> SubmitAnswer(int questionId, int selectedAnswerId)
+        public async Task<IActionResult> SubmitAnswer(int userChallengeId, int selectedAnswerId)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                var command = new SubmitAnswerCommand(userChallengeId, selectedAnswerId);
+                var operationResult = await _mediator.Send(command);
 
-        [HttpPost]
-        [Route("CompleteChallenge")]
-        public async Task<IActionResult> CompleteChallenge(string userId, int challengeId, int score)
-        {
-            throw new NotImplementedException();
+                if (!operationResult.IsSuccess)
+                {
+                    return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+                }
+
+                return Ok(operationResult.Data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
         }
     }
 }

@@ -22,5 +22,14 @@ namespace Domain.Entities
             get => Id;
             set => Id = value;
         }
+
+        public bool IsLastQuestion(int currentIndex)
+        {
+            if (currentIndex == Questions.Count - 1)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

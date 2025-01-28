@@ -5,7 +5,6 @@ using Application.Dtos.QuestionDtos;
 using Application.Queries.QuestionQueries.GetAll;
 using Application.Queries.QuestionQueries.GetById;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

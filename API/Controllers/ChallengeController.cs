@@ -7,6 +7,7 @@ using Application.Queries.ChallengeQueries.GetChallengeById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Application.Queries.ChallengeQueries.GetChallengeWithQuestions;
 
 namespace API.Controllers
 {
@@ -52,6 +53,25 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while fetching Challenge at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetChallengeWithQuestions{challengeId}")]
+        public async Task<IActionResult> GetChallengeWithQuestions(int challengeId)
+        {
+            _logger.LogInformation("Fetching Challenge at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+
+            try
+            {
+                var operationResult = await _mediator.Send(new GetChallengeWithQuestionsQuery(challengeId));
+                return Ok(operationResult.Data);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.InnerException, "An error occurred while fetching Challenge at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }

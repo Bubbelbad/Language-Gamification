@@ -1,5 +1,4 @@
 ﻿using Application.Dtos.AnswerDtos;
-using Domain.Entities;
 
 namespace Application.Dtos.QuestionDtos
 {

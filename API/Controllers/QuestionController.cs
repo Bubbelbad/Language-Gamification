@@ -4,6 +4,7 @@ using Application.Commands.QuestionCommands.Update;
 using Application.Dtos.QuestionDtos;
 using Application.Queries.QuestionQueries.GetAll;
 using Application.Queries.QuestionQueries.GetById;
+using Application.Queries.QuestionQueries.GetQuestionsByChallengeId;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +51,26 @@ namespace API.Controllers
             try
             {
                 var operationResult = await _mediator.Send(new GetQuestionByIdQuery(id));
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Data);
+                }
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching all Questions at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return BadRequest(ex.InnerException);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetQuestionsByChallengeId{challengeId}")]
+        public async Task<IActionResult> GetQuestionsByChallengeId(int challengeId)
+        {
+            try
+            {
+                var operationResult = await _mediator.Send(new GetQuestionsByChallengeIdQuery(challengeId));
                 if (operationResult.IsSuccess)
                 {
                     return Ok(operationResult.Data);

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Test.AnswerTests
 {
     [TestFixture]
+    [Category("Answer/UnitTests/AddAnswer")]
     public class AddAnswerTest
     {
         private ApplicationDbContext _context;

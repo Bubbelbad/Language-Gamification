@@ -25,6 +25,10 @@
 
   <ItemGroup>
     <Folder Include="IntegrationTests\" />
+    <Folder Include="UserTests\" />
+    <Folder Include="UserChallengeTest\" />
+    <Folder Include="ScoreTests\" />
+    <Folder Include="QuizTests\" />
     <Folder Include="UnitTests\" />
   </ItemGroup>
 

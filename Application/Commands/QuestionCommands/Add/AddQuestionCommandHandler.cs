@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Commands.QuestionCommands.Add
 {
-    internal class AddQuestionCommandHandler(IGenericRepository<Question, int> repository, IMapper mapper) : IRequestHandler<AddQuestionCommand, OperationResult<GetQuestionDto>>
+    public class AddQuestionCommandHandler(IGenericRepository<Question, int> repository, IMapper mapper) : IRequestHandler<AddQuestionCommand, OperationResult<GetQuestionDto>>
     {
         IGenericRepository<Question, int> _repository = repository;
         IMapper _mapper = mapper;

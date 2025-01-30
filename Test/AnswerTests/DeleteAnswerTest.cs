@@ -5,7 +5,7 @@ using FakeItEasy;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Test.AnswerTest
+namespace Test.AnswerTests
 {
     [TestFixture]
     [Category("Answer/UnitTests/DeleteAnswer")]

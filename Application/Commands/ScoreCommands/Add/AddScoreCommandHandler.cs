@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Commands.ScoreCommands.Add
 {
-    internal sealed class AddScoreCommandHandler(IGenericRepository<Score, int> repository, IMapper mapper) : IRequestHandler<AddScoreCommand, OperationResult<GetScoreDto>>
+    public sealed class AddScoreCommandHandler(IGenericRepository<Score, int> repository, IMapper mapper) : IRequestHandler<AddScoreCommand, OperationResult<GetScoreDto>>
     {
         private readonly IGenericRepository<Score, int> _repository = repository;
         private readonly IMapper _mapper = mapper;

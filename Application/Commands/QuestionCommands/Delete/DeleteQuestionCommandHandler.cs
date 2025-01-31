@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Commands.QuestionCommands.Delete
 {
-    internal sealed class DeleteQuestionCommandHandler(IGenericRepository<Question, int> repository) : IRequestHandler<DeleteQuestionCommand, OperationResult<bool>>
+    public sealed class DeleteQuestionCommandHandler(IGenericRepository<Question, int> repository) : IRequestHandler<DeleteQuestionCommand, OperationResult<bool>>
     {
         private readonly IGenericRepository<Question, int> _repository = repository;
 

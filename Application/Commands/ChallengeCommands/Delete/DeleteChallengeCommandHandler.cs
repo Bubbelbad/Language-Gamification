@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Commands.ChallengeCommands.Delete
 {
-    internal sealed class DeleteChallengeCommandHandler(IGenericRepository<Challenge, int> repository) : IRequestHandler<DeleteChallengeCommand, OperationResult<bool>>
+    public sealed class DeleteChallengeCommandHandler(IGenericRepository<Challenge, int> repository) : IRequestHandler<DeleteChallengeCommand, OperationResult<bool>>
     {
         private readonly IGenericRepository<Challenge, int> _repository = repository;
 

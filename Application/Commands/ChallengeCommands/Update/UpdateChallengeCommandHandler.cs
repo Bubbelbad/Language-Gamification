@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Commands.ChallengeCommands.Update
 {
-    internal sealed class UpdateChallengeCommandHandler(IGenericRepository<Challenge, int> repository, IMapper mapper) : IRequestHandler<UpdateChallengeCommand, OperationResult<GetChallengeDto>>
+    public sealed class UpdateChallengeCommandHandler(IGenericRepository<Challenge, int> repository, IMapper mapper) : IRequestHandler<UpdateChallengeCommand, OperationResult<GetChallengeDto>>
     {
         private readonly IGenericRepository<Challenge, int> _repository = repository;
         private readonly IMapper _mapper = mapper;

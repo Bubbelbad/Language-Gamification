@@ -28,7 +28,6 @@
     <Folder Include="IntegrationTests\" />
     <Folder Include="UserTests\" />
     <Folder Include="ScoreTests\" />
-    <Folder Include="UserChallengeTest\" />
     <Folder Include="QuizTests\" />
     <Folder Include="UnitTests\" />
   </ItemGroup>

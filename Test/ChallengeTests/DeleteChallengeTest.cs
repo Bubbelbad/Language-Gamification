@@ -21,7 +21,7 @@ namespace Test.ChallengeTests
         }
 
         [Test]
-        public async Task DeletingAnswer_ShouldCallRepositoryDelete_Method()
+        public async Task DeletingChallenge_ShouldCallRepositoryDelete_Method()
         {
             var challengeId = 1;
             var command = new DeleteChallengeCommand(challengeId);

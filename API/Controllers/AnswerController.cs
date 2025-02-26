@@ -4,6 +4,8 @@ using Application.Commands.AnswerCommands.Update;
 using Application.Dtos.AnswerDtos;
 using Application.Queries.AnswerQueries.GetAllAnswers;
 using Application.Queries.AnswerQueries.GetAnswerById;
+using Application.Queries.AnswerQueries.GetAnswersByQuestionId;
+using Application.Queries.QuestionQueries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -55,6 +57,27 @@ namespace API.Controllers
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }
+
+        [HttpGet]
+        [Route("GetAnswersByQuestionId{id}")]
+        public async Task<IActionResult> GetAnswersByQuestionId(int id)
+        {
+            try
+            {
+                var operationResult = await _mediator.Send(new GetAnswersByQuestionIdQuery(id));
+                if (operationResult.IsSuccess)
+                {
+                    return Ok(operationResult.Data);
+                }
+                return BadRequest(new { message = operationResult.Message, errors = operationResult.ErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching all Questions at {time}", DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                return BadRequest(ex.InnerException);
+            }
+        }
+
 
         [HttpPost]
         [Route("Add")]
